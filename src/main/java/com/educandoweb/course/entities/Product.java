@@ -3,37 +3,49 @@ package com.educandoweb.course.entities;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable{
+@Table(name = "tb_product")
+public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    @Transient
-    private Set<Product> products = new HashSet<>();
+    private String description;
 
-    public Category(){      
+    private Double price;
+
+    private String imgUrl;
+
+    public Product() {
+
     }
 
-    public Category(Long id, String name) {
-        super();
+    public Product(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imgUrl = imgUrl;
     }
+
+    @Transient
+    private Set<Category> categories = new HashSet<>();
 
     @Override
     public boolean equals(Object obj) {
@@ -43,16 +55,11 @@ public class Category implements Serializable{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Category other = (Category) obj;
+        Product other = (Product) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
         } else if (!id.equals(other.id))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
             return false;
         return true;
     }
@@ -62,7 +69,6 @@ public class Category implements Serializable{
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
